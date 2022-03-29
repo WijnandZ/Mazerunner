@@ -4,20 +4,25 @@ import com.github.hanyaeger.api.AnchorPoint;
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.entities.impl.TextEntity;
 import com.github.hanyaeger.api.scenes.StaticScene;
-import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import nl.han.mazerunner.Mazerunner;
-import nl.han.mazerunner.entities.Button;
-import nl.han.mazerunner.entities.StartButton;
+import nl.han.mazerunner.entities.buttons.Button;
+import nl.han.mazerunner.entities.buttons.StartGameButton;
 
 public class TitleScreenScene extends StaticScene {
 
     private Mazerunner mazerunner;
+    final private String FONT;
+    final private Color WHITE;
+    final private Color LIGHTGRAY;
 
     public TitleScreenScene(Mazerunner mazerunner) {
         this.mazerunner = mazerunner;
+        this.FONT = "ROBOTO";
+        this.WHITE = Color.WHITE;
+        this.LIGHTGRAY = Color.LIGHTGRAY;
     }
 
     @Override
@@ -29,20 +34,17 @@ public class TitleScreenScene extends StaticScene {
 
     @Override
     public void setupEntities() {
-        var titleText = new TextEntity(new Coordinate2D(getWidth() / 2, getHeight() / 4), "Mazerunner");
+        Coordinate2D textLocation = new Coordinate2D(getWidth() / 2, getHeight() / 4);
+        TextEntity titleText = new TextEntity(textLocation, "Mazerunner");
         titleText.setAnchorPoint(AnchorPoint.BOTTOM_CENTER);
-        titleText.setFill(Color.WHITE);
-        titleText.setFont(Font.font("Roboto", FontWeight.BOLD, 144));
+        titleText.setFill(WHITE);
+        titleText.setFont(Font.font(FONT, FontWeight.BOLD, 144));
         addEntity(titleText);
 
-        var startButtonLocation = new Coordinate2D(getWidth() / 2, getHeight() / 2);
+        Coordinate2D buttonLocation = new Coordinate2D(getWidth() / 2, getHeight() / 2);
         String startButtonText = "Start Game";
-        Color buttonColor = Color.WHITE;
-        Color buttonEnterColor = Color.LIGHTGRAY;
-        Cursor mouseCursor = Cursor.DEFAULT;
-        Cursor buttonEnteredCursor = Cursor.HAND;
-        Font startButtonFont = Font.font("Roboto", FontWeight.BOLD, 72);
-        var startGameButton = new Button(startButtonLocation, startButtonText, mazerunner, buttonColor, mouseCursor, buttonEnterColor, buttonEnteredCursor, startButtonFont);
+        Font startButtonFont = Font.font(FONT, FontWeight.BOLD, 72);
+        Button startGameButton = new StartGameButton(buttonLocation, startButtonText, WHITE, LIGHTGRAY, startButtonFont, mazerunner);
         startGameButton.setAnchorPoint(AnchorPoint.TOP_CENTER);
         addEntity(startGameButton);
     }
