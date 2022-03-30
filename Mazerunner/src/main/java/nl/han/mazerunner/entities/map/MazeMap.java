@@ -1,7 +1,6 @@
 package nl.han.mazerunner.entities.map;
 
 import com.github.hanyaeger.api.scenes.TileMap;
-import nl.han.mazerunner.entities.enemies.MoveableEnemy;
 import nl.han.mazerunner.entities.map.tiles.*;
 
 public class MazeMap extends TileMap {
