@@ -18,7 +18,6 @@ import nl.han.mazerunner.entities.enemies.MoveableEnemy;
 import nl.han.mazerunner.entities.map.tiles.*;
 import nl.han.mazerunner.entities.powerups.Live;
 import nl.han.mazerunner.entities.powerups.Coin;
-import nl.han.mazerunner.entities.text.LivesText;
 
 import java.util.Set;
 
@@ -32,14 +31,12 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     private boolean hasKey = false;
     private int totalOfCoins;
     private int totalOfLives;
-    private LivesText livesText;
 
-    public Player(Coordinate2D initialLocation, Mazerunner mazerunner, int coins, int lives, LivesText livesText) {
+    public Player(Coordinate2D initialLocation, Mazerunner mazerunner, int coins, int lives) {
         super("sprites/popetje.png", initialLocation, new Size(40, 40));
         this.mazerunner = mazerunner;
         this.totalOfCoins = coins;
         this.totalOfLives = lives;
-        this.livesText = livesText;
     }
 
     @Override
@@ -56,7 +53,7 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             ((Coin) collidingObject).remove();
         }
         if (collidingObject instanceof Live) {
-            totalOfLives.setText(String.valueOf(getTotalOfLives()));
+            totalOfLives++;
             ((Live) collidingObject).remove();
         }
         if (collidingObject instanceof Finish) {
