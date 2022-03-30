@@ -12,7 +12,7 @@ public class MoveableEnemy extends DynamicSpriteEntity implements Collider, Coll
 
     public MoveableEnemy(Coordinate2D location, Size size, String resource) {
         super(resource, location, size);
-        setMotion(4, Direction.RIGHT);
+        setMotion(6, Direction.RIGHT);
 
     }
 

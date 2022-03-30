@@ -42,9 +42,12 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
         }
         addEntity(player);
 
-        Coordinate2D enemyLocation = new Coordinate2D(70, 430);
-        MoveableEnemy moveableEnemy = new MoveableEnemy(enemyLocation, defaultSize, "sprites/enemy.png");
-        addEntity(moveableEnemy);
+        Coordinate2D enemy1Location = new Coordinate2D(70, 430);
+        Coordinate2D enemy2Location = new Coordinate2D(1330, 730);
+        MoveableEnemy enemy1 = new MoveableEnemy(enemy1Location, defaultSize, "sprites/enemy.png");
+        MoveableEnemy enemy2 = new MoveableEnemy(enemy2Location, defaultSize, "sprites/enemy.png");
+        addEntity(enemy1);
+        addEntity(enemy2);
     }
 
     @Override
