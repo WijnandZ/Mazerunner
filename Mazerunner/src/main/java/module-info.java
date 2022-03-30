@@ -7,4 +7,5 @@ module mazerunner {
     opens audio;
     opens backgrounds;
     opens sprites;
+    exports nl.han.mazerunner.entities.map.tiles;
 }

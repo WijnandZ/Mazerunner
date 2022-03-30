@@ -1,4 +1,4 @@
-package nl.han.mazerunner.entities.map;
+package nl.han.mazerunner.entities.map.tiles;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;

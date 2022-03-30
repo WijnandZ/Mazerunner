@@ -8,11 +8,15 @@ import com.github.hanyaeger.api.entities.SceneBorderTouchingWatcher;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.scenes.SceneBorder;
 import com.github.hanyaeger.api.userinput.KeyListener;
+import com.github.hanyaeger.api.userinput.MouseButtonPressedListener;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import nl.han.mazerunner.Mazerunner;
-import nl.han.mazerunner.entities.map.Finish;
-import nl.han.mazerunner.entities.map.Wall;
-import nl.han.mazerunner.entities.map.Teleporter;
+import nl.han.mazerunner.entities.Items.Pickaxe;
+import nl.han.mazerunner.entities.map.tiles.BreakableWall;
+import nl.han.mazerunner.entities.map.tiles.Finish;
+import nl.han.mazerunner.entities.map.tiles.Wall;
+import nl.han.mazerunner.entities.map.tiles.Teleporter;
 import nl.han.mazerunner.entities.powerups.Live;
 import nl.han.mazerunner.entities.powerups.Coin;
 
@@ -24,6 +28,7 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     private double lastY;
     private double currentX;
     private double currentY;
+    private boolean hasPickaxe = false;
     private int totalOfCoins;
     private int totalOfLives;
 
@@ -74,6 +79,13 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         }
         if (collidingObject instanceof Finish) {
             this.mazerunner.setActiveScene(2);
+        }
+        if (collidingObject instanceof Pickaxe) {
+            hasPickaxe = true;
+            ((Pickaxe) collidingObject).remove();
+        }
+        if (collidingObject instanceof BreakableWall && hasPickaxe == true){
+            ((BreakableWall) collidingObject).remove();
         }
     }
 
@@ -130,4 +142,5 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     public int getTotalOfLives() {
         return totalOfLives;
     }
+
 }
