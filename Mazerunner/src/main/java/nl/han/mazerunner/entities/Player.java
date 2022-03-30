@@ -31,6 +31,7 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     private boolean hasKey = false;
     private int totalOfCoins;
     private int totalOfLives;
+    private int Inverted = 0;
 
     public Player(Coordinate2D initialLocation, Mazerunner mazerunner, int coins, int lives) {
         super("sprites/popetje.png", initialLocation, new Size(40, 40));
@@ -81,6 +82,19 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             setAnchorLocation(startPoint);
             checkLives();
         }
+        if (collidingObject instanceof Landmine) {
+            SoundClip swordSound = new SoundClip("audio/boom.mp3");
+            swordSound.play();
+            totalOfLives--;
+            Coordinate2D startPoint = new Coordinate2D(70, 70);
+            setAnchorLocation(startPoint);
+            checkLives();
+        }
+        if (collidingObject instanceof InvertedControlsTrap){
+            Inverted = 120;
+
+
+        }
 
     }
 
@@ -88,16 +102,16 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     public void onPressedKeysChange(Set<KeyCode> pressedKeys) {
         if (pressedKeys.contains(KeyCode.A) || pressedKeys.contains(KeyCode.LEFT)) {
             setLastLocation();
-            setAnchorLocationX(getAnchorLocation().getX() - 60);
+            setAnchorLocationX(getAnchorLocation().getX() - 60 + Inverted);
         } else if (pressedKeys.contains(KeyCode.D) || pressedKeys.contains(KeyCode.RIGHT)) {
             setLastLocation();
-            setAnchorLocationX(getAnchorLocation().getX() + 60);
+            setAnchorLocationX(getAnchorLocation().getX() + 60 - Inverted);
         } else if (pressedKeys.contains(KeyCode.W) || pressedKeys.contains(KeyCode.UP)) {
             setLastLocation();
-            setAnchorLocationY(getAnchorLocation().getY() - 60);
+            setAnchorLocationY(getAnchorLocation().getY() - 60 + Inverted);
         } else if (pressedKeys.contains(KeyCode.S) || pressedKeys.contains(KeyCode.DOWN)) {
             setLastLocation();
-            setAnchorLocationY(getAnchorLocation().getY() + 60);
+            setAnchorLocationY(getAnchorLocation().getY() + 60 - Inverted);
         }
         setCurrentLocation();
     }
