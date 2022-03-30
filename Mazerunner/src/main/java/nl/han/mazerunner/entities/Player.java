@@ -6,6 +6,7 @@ import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.SceneBorderTouchingWatcher;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
+import com.github.hanyaeger.api.media.SoundClip;
 import com.github.hanyaeger.api.scenes.SceneBorder;
 import com.github.hanyaeger.api.userinput.KeyListener;
 import com.github.hanyaeger.api.userinput.MouseButtonPressedListener;
@@ -70,12 +71,10 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         }
         if (collidingObject instanceof Coin) {
             totalOfCoins++;
-            System.out.println(totalOfCoins);
             ((Coin) collidingObject).remove();
         }
         if (collidingObject instanceof Live) {
             totalOfLives++;
-            System.out.println(totalOfLives);
             ((Live) collidingObject).remove();
         }
         if (collidingObject instanceof Finish) {
@@ -89,6 +88,8 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             ((BreakableWall) collidingObject).remove();
         }
         if (collidingObject instanceof MoveableEnemy) {
+            SoundClip swordSound = new SoundClip("audio/sword_sound.mp3");
+            swordSound.play();
             totalOfLives--;
             Coordinate2D startPoint = new Coordinate2D(70, 70);
             setAnchorLocation(startPoint);

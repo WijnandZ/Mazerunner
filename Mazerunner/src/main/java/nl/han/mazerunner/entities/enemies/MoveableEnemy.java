@@ -6,6 +6,8 @@ import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.Direction;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
+import com.github.hanyaeger.api.media.SoundClip;
+import nl.han.mazerunner.entities.Player;
 import nl.han.mazerunner.entities.map.tiles.Wall;
 
 public class MoveableEnemy extends DynamicSpriteEntity implements Collider, Collided {
@@ -19,7 +21,6 @@ public class MoveableEnemy extends DynamicSpriteEntity implements Collider, Coll
     @Override
     public void onCollision(Collider collidingObject) {
         if (collidingObject instanceof Wall) {
-            System.out.println(getAnchorLocation());
             if (getDirection() == 90) {
                 setMotion(getSpeed(), Direction.LEFT);
             } else {
