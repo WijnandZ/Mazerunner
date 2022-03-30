@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import nl.han.mazerunner.Mazerunner;
 import nl.han.mazerunner.entities.Items.Pickaxe;
+import nl.han.mazerunner.entities.enemies.MoveableEnemy;
 import nl.han.mazerunner.entities.map.tiles.BreakableWall;
 import nl.han.mazerunner.entities.map.tiles.Finish;
 import nl.han.mazerunner.entities.map.tiles.Wall;
@@ -86,6 +87,14 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         }
         if (collidingObject instanceof BreakableWall && hasPickaxe == true){
             ((BreakableWall) collidingObject).remove();
+        }
+        if (collidingObject instanceof MoveableEnemy) {
+            totalOfLives--;
+            Coordinate2D startPoint = new Coordinate2D(70, 70);
+            setAnchorLocation(startPoint);
+            if (totalOfLives == 0) {
+                this.mazerunner.setActiveScene(2);
+            }
         }
     }
 

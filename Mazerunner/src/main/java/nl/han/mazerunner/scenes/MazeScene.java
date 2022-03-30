@@ -1,11 +1,13 @@
 package nl.han.mazerunner.scenes;
 
+import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.scenes.DynamicScene;
 import com.github.hanyaeger.api.scenes.TileMapContainer;
 import nl.han.mazerunner.Mazerunner;
 import nl.han.mazerunner.entities.Items.Pickaxe;
 import nl.han.mazerunner.entities.Player;
+import nl.han.mazerunner.entities.enemies.MoveableEnemy;
 import nl.han.mazerunner.entities.map.MazeMap;
 import nl.han.mazerunner.entities.powerups.Live;
 import nl.han.mazerunner.entities.powerups.Coin;
@@ -39,6 +41,10 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
             addEntity(new Coin(defaultSize));
         }
         addEntity(player);
+
+        Coordinate2D enemyLocation = new Coordinate2D(70, 430);
+        MoveableEnemy moveableEnemy = new MoveableEnemy(enemyLocation, defaultSize, "sprites/enemy.png");
+        addEntity(moveableEnemy);
     }
 
     @Override
