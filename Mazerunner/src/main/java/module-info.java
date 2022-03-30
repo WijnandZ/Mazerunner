@@ -8,5 +8,5 @@ module mazerunner {
     opens backgrounds;
     opens sprites;
     exports nl.han.mazerunner.entities.map.tiles;
-    exports nl.han.mazerunner.entities.enemies;
+    exports nl.han.mazerunner.entities.boobytraps;
 }
