@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import nl.han.mazerunner.Mazerunner;
 
-public class StartGameButton extends Button{
+public class StartGameButton extends Button {
 
     private Mazerunner mazerunner;
 
