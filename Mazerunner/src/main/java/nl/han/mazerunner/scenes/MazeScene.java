@@ -2,22 +2,27 @@ package nl.han.mazerunner.scenes;
 
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
+import com.github.hanyaeger.api.entities.impl.TextEntity;
 import com.github.hanyaeger.api.scenes.DynamicScene;
 import com.github.hanyaeger.api.scenes.TileMapContainer;
 import nl.han.mazerunner.Mazerunner;
+import nl.han.mazerunner.entities.Items.Key;
 import nl.han.mazerunner.entities.Items.Pickaxe;
 import nl.han.mazerunner.entities.Player;
+import nl.han.mazerunner.entities.ScoreBoard;
 import nl.han.mazerunner.entities.enemies.MoveableEnemy;
 import nl.han.mazerunner.entities.map.MazeMap;
 import nl.han.mazerunner.entities.powerups.Live;
 import nl.han.mazerunner.entities.powerups.Coin;
+import nl.han.mazerunner.entities.text.LivesText;
 
 public class MazeScene extends DynamicScene implements TileMapContainer {
 
     private Mazerunner mazerunner;
     private Player player;
+    private ScoreBoard scoreBoard;
 
-    public MazeScene(Mazerunner mazerunner, Player player) {
+    public MazeScene(Mazerunner mazerunner, Player player, ScoreBoard scoreBoard) {
         this.mazerunner = mazerunner;
         this.player = player;
     }
@@ -31,9 +36,16 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
 
     @Override
     public void setupEntities() {
+        Coordinate2D livesTextLocation = new Coordinate2D(0, 0);
+        TextEntity livesText = new LivesText(livesTextLocation);
+        livesText.setText(String.valueOf(player.getTotalOfLives()));
+        addEntity(livesText);
+
         int defaultWidth = 40;
         Size defaultSize = new Size(defaultWidth, defaultWidth);
+
         addEntity(new Pickaxe(defaultSize));
+        addEntity(new Key(defaultSize));
         for (int i = 0; i < 3; i++) {
             addEntity(new Live(defaultSize));
         }
@@ -42,7 +54,7 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
         }
         addEntity(player);
 
-        int enemySpeed = 10;
+        int enemySpeed = 8;
         Coordinate2D enemy1Location = new Coordinate2D(70, 430);
         Coordinate2D enemy2Location = new Coordinate2D(1330, 730);
         Coordinate2D enemy3Location = new Coordinate2D(1690, 850);

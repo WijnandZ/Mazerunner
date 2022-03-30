@@ -6,21 +6,19 @@ import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.SceneBorderTouchingWatcher;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
+import com.github.hanyaeger.api.entities.impl.SpriteEntity;
 import com.github.hanyaeger.api.media.SoundClip;
 import com.github.hanyaeger.api.scenes.SceneBorder;
 import com.github.hanyaeger.api.userinput.KeyListener;
-import com.github.hanyaeger.api.userinput.MouseButtonPressedListener;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import nl.han.mazerunner.Mazerunner;
+import nl.han.mazerunner.entities.Items.Key;
 import nl.han.mazerunner.entities.Items.Pickaxe;
 import nl.han.mazerunner.entities.enemies.MoveableEnemy;
-import nl.han.mazerunner.entities.map.tiles.BreakableWall;
-import nl.han.mazerunner.entities.map.tiles.Finish;
-import nl.han.mazerunner.entities.map.tiles.Wall;
-import nl.han.mazerunner.entities.map.tiles.Teleporter;
+import nl.han.mazerunner.entities.map.tiles.*;
 import nl.han.mazerunner.entities.powerups.Live;
 import nl.han.mazerunner.entities.powerups.Coin;
+import nl.han.mazerunner.entities.text.LivesText;
 
 import java.util.Set;
 
@@ -31,39 +29,23 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     private double currentX;
     private double currentY;
     private boolean hasPickaxe = false;
+    private boolean hasKey = false;
     private int totalOfCoins;
     private int totalOfLives;
+    private LivesText livesText;
 
-    public Player(Coordinate2D initialLocation, Mazerunner mazerunner, int coins, int lives) {
+    public Player(Coordinate2D initialLocation, Mazerunner mazerunner, int coins, int lives, LivesText livesText) {
         super("sprites/popetje.png", initialLocation, new Size(40, 40));
         this.mazerunner = mazerunner;
         this.totalOfCoins = coins;
         this.totalOfLives = lives;
+        this.livesText = livesText;
     }
 
     @Override
     public void onCollision(Collider collidingObject) {
         if (collidingObject instanceof Wall) {
-            if(currentY - ((Wall) collidingObject).getAnchorLocation().getY() == 10 && currentX - ((Wall) collidingObject).getAnchorLocation().getX() == 10){
-                if(lastX - currentX > 60 || lastX - currentX < -60) {
-                    if(currentX > getSceneWidth() / 2){
-                        setAnchorLocationX(currentX - 60);
-                    } else {
-                        setAnchorLocationX(currentX + 60);
-                    }
-                    setCurrentLocation();
-                } else if(lastY - currentY > 60 || lastY - currentY < -60) {
-                    if(currentY > getSceneHeight() / 2){
-                        setAnchorLocationY(currentY - 60);
-                    } else {
-                        setAnchorLocationY(currentY + 60);
-                    }
-                    setCurrentLocation();
-                } else {
-                    setAnchorLocationX(lastX);
-                    setAnchorLocationY(lastY);
-                }
-            }
+            calculateCoordinates((Wall) collidingObject);
         }
         if (collidingObject instanceof Teleporter) {
             setAnchorLocationX(((Teleporter) collidingObject).getTeleportX());
@@ -74,7 +56,7 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             ((Coin) collidingObject).remove();
         }
         if (collidingObject instanceof Live) {
-            totalOfLives++;
+            totalOfLives.setText(String.valueOf(getTotalOfLives()));
             ((Live) collidingObject).remove();
         }
         if (collidingObject instanceof Finish) {
@@ -84,8 +66,15 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             hasPickaxe = true;
             ((Pickaxe) collidingObject).remove();
         }
+        if (collidingObject instanceof Key) {
+            hasKey = true;
+            ((Key) collidingObject).remove();
+        }
         if (collidingObject instanceof BreakableWall && hasPickaxe == true){
             ((BreakableWall) collidingObject).remove();
+        }
+        if (collidingObject instanceof Door && hasKey == true){
+            ((Door) collidingObject).remove();
         }
         if (collidingObject instanceof MoveableEnemy) {
             SoundClip swordSound = new SoundClip("audio/sword_sound.mp3");
@@ -93,10 +82,9 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             totalOfLives--;
             Coordinate2D startPoint = new Coordinate2D(70, 70);
             setAnchorLocation(startPoint);
-            if (totalOfLives == 0) {
-                this.mazerunner.setActiveScene(2);
-            }
+            checkLives();
         }
+
     }
 
     @Override
@@ -132,6 +120,35 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             case RIGHT:
                 setAnchorLocationX(getSceneWidth() - 50);
                 break;
+        }
+    }
+
+    private void calculateCoordinates(SpriteEntity collider){
+        if(currentY - collider.getAnchorLocation().getY() == 10 && currentX - collider.getAnchorLocation().getX() == 10){
+            if(lastX - currentX > 60 || lastX - currentX < -60) {
+                if(currentX > getSceneWidth() / 2){
+                    setAnchorLocationX(currentX - 60);
+                } else {
+                    setAnchorLocationX(currentX + 60);
+                }
+                setCurrentLocation();
+            } else if(lastY - currentY > 60 || lastY - currentY < -60) {
+                if(currentY > getSceneHeight() / 2){
+                    setAnchorLocationY(currentY - 60);
+                } else {
+                    setAnchorLocationY(currentY + 60);
+                }
+                setCurrentLocation();
+            } else {
+                setAnchorLocationX(lastX);
+                setAnchorLocationY(lastY);
+            }
+        }
+    }
+
+    private void checkLives(){
+        if (totalOfLives == 0) {
+            this.mazerunner.setActiveScene(2);
         }
     }
 
