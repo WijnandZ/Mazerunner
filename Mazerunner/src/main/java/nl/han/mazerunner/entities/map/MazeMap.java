@@ -1,6 +1,7 @@
 package nl.han.mazerunner.entities.map;
 
 import com.github.hanyaeger.api.scenes.TileMap;
+import nl.han.mazerunner.entities.boobytraps.*;
 import nl.han.mazerunner.entities.map.tiles.*;
 
 public class MazeMap extends TileMap {
@@ -12,7 +13,11 @@ public class MazeMap extends TileMap {
         addEntity(2, BreakableWall.class, "sprites/wall2.png");
         addEntity(3, Teleporter.class, "sprites/teleporter.png");
         addEntity(4, Finish.class, "sprites/finish.png");
-        addEntity(5, Door.class, "sprites/door.png");
+        addEntity(5, InvertedControlsTrap.class,"sprites/invertedTrap.png");
+        addEntity(6, LandMine.class,"sprites/Landmine.png");
+        addEntity(7, Door.class, "sprites/door.png");
+
+
     }
 
     @Override
@@ -32,9 +37,9 @@ public class MazeMap extends TileMap {
                 {1,0,1,1,0,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1},
                 {1,0,0,0,0,2,0,0,0,1,0,0,0,1,2,1,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,1},
                 {1,1,1,1,0,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1,0,1,0,1},
-                {1,0,3,1,3,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1},
-                {1,0,0,1,1,1,0,1,0,1,1,1,0,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1,5,1},
-                {1,0,0,2,2,2,0,1,0,0,0,0,0,2,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,4,1},
+                {1,0,3,1,3,1,0,0,0,0,0,1,0,0,0,5,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1},
+                {1,0,0,1,1,1,0,1,0,1,1,1,0,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1,7,1},
+                {1,5,0,2,2,2,0,1,0,0,0,0,0,2,0,0,0,1,0,0,0,1,0,6,0,0,0,0,0,1,4,1},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
     }

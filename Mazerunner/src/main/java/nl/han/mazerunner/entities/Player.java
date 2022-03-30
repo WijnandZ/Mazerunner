@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import nl.han.mazerunner.Mazerunner;
 import nl.han.mazerunner.entities.Items.Key;
 import nl.han.mazerunner.entities.Items.Pickaxe;
+import nl.han.mazerunner.entities.boobytraps.*;
 import nl.han.mazerunner.entities.enemies.MoveableEnemy;
 import nl.han.mazerunner.entities.map.tiles.*;
 import nl.han.mazerunner.entities.powerups.Live;
@@ -31,6 +32,8 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     private boolean hasKey = false;
     private int totalOfCoins;
     private int totalOfLives;
+    private int moveValue = 60;
+
 
     public Player(Coordinate2D initialLocation, Mazerunner mazerunner, int coins, int lives) {
         super("sprites/popetje.png", initialLocation, new Size(40, 40));
@@ -79,25 +82,43 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             totalOfLives--;
             Coordinate2D startPoint = new Coordinate2D(70, 70);
             setAnchorLocation(startPoint);
+            moveValue = 60;
             checkLives();
         }
-
+        if (collidingObject instanceof LandMine) {
+            SoundClip swordSound = new SoundClip("audio/boom.mp3");
+            swordSound.play();
+            totalOfLives--;
+            Coordinate2D startPoint = new Coordinate2D(70, 70);
+            setAnchorLocation(startPoint);
+            moveValue = 60;
+            ((LandMine) collidingObject).remove();
+            checkLives();
+        }
+        if (collidingObject instanceof InvertedControlsTrap){
+            if (moveValue == 60){
+                moveValue = -60;
+            } else {
+                moveValue = 60;
+            }
+            ((InvertedControlsTrap) collidingObject).remove();
+        }
     }
 
     @Override
     public void onPressedKeysChange(Set<KeyCode> pressedKeys) {
         if (pressedKeys.contains(KeyCode.A) || pressedKeys.contains(KeyCode.LEFT)) {
             setLastLocation();
-            setAnchorLocationX(getAnchorLocation().getX() - 60);
+            setAnchorLocationX(getAnchorLocation().getX() - moveValue);
         } else if (pressedKeys.contains(KeyCode.D) || pressedKeys.contains(KeyCode.RIGHT)) {
             setLastLocation();
-            setAnchorLocationX(getAnchorLocation().getX() + 60);
+            setAnchorLocationX(getAnchorLocation().getX() + moveValue);
         } else if (pressedKeys.contains(KeyCode.W) || pressedKeys.contains(KeyCode.UP)) {
             setLastLocation();
-            setAnchorLocationY(getAnchorLocation().getY() - 60);
+            setAnchorLocationY(getAnchorLocation().getY() - moveValue);
         } else if (pressedKeys.contains(KeyCode.S) || pressedKeys.contains(KeyCode.DOWN)) {
             setLastLocation();
-            setAnchorLocationY(getAnchorLocation().getY() + 60);
+            setAnchorLocationY(getAnchorLocation().getY() + moveValue);
         }
         setCurrentLocation();
     }
