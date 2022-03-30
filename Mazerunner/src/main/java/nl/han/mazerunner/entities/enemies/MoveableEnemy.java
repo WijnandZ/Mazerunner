@@ -10,9 +10,9 @@ import nl.han.mazerunner.entities.map.tiles.Wall;
 
 public class MoveableEnemy extends DynamicSpriteEntity implements Collider, Collided {
 
-    public MoveableEnemy(Coordinate2D location, Size size, String resource) {
+    public MoveableEnemy(Coordinate2D location, Size size, String resource, int speed) {
         super(resource, location, size);
-        setMotion(6, Direction.RIGHT);
+        setMotion(speed, Direction.RIGHT);
 
     }
 
