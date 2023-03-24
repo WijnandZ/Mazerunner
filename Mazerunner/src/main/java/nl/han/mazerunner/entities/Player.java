@@ -5,7 +5,6 @@ import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.SceneBorderTouchingWatcher;
-import com.github.hanyaeger.api.entities.YaegerEntity;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.entities.impl.SpriteEntity;
 import com.github.hanyaeger.api.scenes.SceneBorder;
@@ -17,7 +16,6 @@ import nl.han.mazerunner.entities.Items.Item;
 import nl.han.mazerunner.entities.Items.Key;
 import nl.han.mazerunner.entities.Items.Pickaxe;
 import nl.han.mazerunner.entities.map.tiles.*;
-import nl.han.mazerunner.entities.powerups.PowerUp;
 
 import java.util.Set;
 
@@ -64,10 +62,7 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             if (collidingObject instanceof Pickaxe) {
                 hasPickaxe = true;
             }
-            ((Item) collidingObject).remove();
-        }
-        if (collidingObject instanceof PowerUp) {
-            ((PowerUp) collidingObject).pickUp(this);
+            ((Item) collidingObject).pickUp(this);
         }
         if (collidingObject instanceof Finish) {
             this.mazerunner.setActiveScene(2);

@@ -4,15 +4,14 @@ import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.scenes.DynamicScene;
 import com.github.hanyaeger.api.scenes.TileMapContainer;
-import nl.han.mazerunner.Other.Scoreboard;
 import nl.han.mazerunner.entities.Items.Key;
 import nl.han.mazerunner.entities.Items.Pickaxe;
 import nl.han.mazerunner.entities.Player;
 import nl.han.mazerunner.entities.enemies.Enemy;
 import nl.han.mazerunner.entities.enemies.Knight;
 import nl.han.mazerunner.entities.map.MazeMap;
-import nl.han.mazerunner.entities.powerups.Life;
-import nl.han.mazerunner.entities.powerups.Coin;
+import nl.han.mazerunner.entities.Items.Life;
+import nl.han.mazerunner.entities.Items.Coin;
 
 public class MazeScene extends DynamicScene implements TileMapContainer {
     private Player player;
