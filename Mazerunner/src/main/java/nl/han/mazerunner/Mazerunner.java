@@ -3,6 +3,7 @@ package nl.han.mazerunner;
 import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.YaegerGame;
+import nl.han.mazerunner.Other.Scoreboard;
 import nl.han.mazerunner.entities.Player;
 import nl.han.mazerunner.scenes.GameOverScene;
 import nl.han.mazerunner.scenes.MazeScene;
@@ -22,7 +23,8 @@ public class Mazerunner extends YaegerGame {
 
     @Override
     public void setupScenes() {
-        Player player = new Player(new Coordinate2D(70, 70), this, 0, 2);
+        Scoreboard scoreboard = new Scoreboard(new Coordinate2D(0, 0));
+        Player player = new Player(new Coordinate2D(70, 70), this, 0, 2, scoreboard);
         addScene(0, new TitleScreenScene(this));
         addScene(1, new MazeScene(player));
         addScene(2, new GameOverScene(this, player));

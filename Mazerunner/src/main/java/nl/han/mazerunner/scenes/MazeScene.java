@@ -4,12 +4,14 @@ import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.scenes.DynamicScene;
 import com.github.hanyaeger.api.scenes.TileMapContainer;
+import nl.han.mazerunner.Other.Scoreboard;
 import nl.han.mazerunner.entities.Items.Key;
 import nl.han.mazerunner.entities.Items.Pickaxe;
 import nl.han.mazerunner.entities.Player;
-import nl.han.mazerunner.entities.enemies.MoveableEnemy;
+import nl.han.mazerunner.entities.enemies.Enemy;
+import nl.han.mazerunner.entities.enemies.Knight;
 import nl.han.mazerunner.entities.map.MazeMap;
-import nl.han.mazerunner.entities.powerups.Live;
+import nl.han.mazerunner.entities.powerups.Life;
 import nl.han.mazerunner.entities.powerups.Coin;
 
 public class MazeScene extends DynamicScene implements TileMapContainer {
@@ -34,7 +36,7 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
         addEntity(new Pickaxe(defaultSize));
         addEntity(new Key(defaultSize));
         for (int i = 0; i < 3; i++) {
-            addEntity(new Live(defaultSize));
+            addEntity(new Life(defaultSize));
         }
         for (int i = 0; i < 15; i++) {
             addEntity(new Coin(defaultSize));
@@ -45,12 +47,18 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
         Coordinate2D enemy1Location = new Coordinate2D(70, 430);
         Coordinate2D enemy2Location = new Coordinate2D(1330, 730);
         Coordinate2D enemy3Location = new Coordinate2D(1690, 850);
-        MoveableEnemy enemy1 = new MoveableEnemy(enemy1Location, defaultSize, "sprites/enemy.png", enemySpeed);
-        MoveableEnemy enemy2 = new MoveableEnemy(enemy2Location, defaultSize, "sprites/enemy.png", enemySpeed);
-        MoveableEnemy enemy3 = new MoveableEnemy(enemy3Location, defaultSize, "sprites/enemy.png", enemySpeed);
-        addEntity(enemy1);
-        addEntity(enemy2);
-        addEntity(enemy3);
+        Enemy[] allEnemies = {
+            new Knight(enemy1Location, defaultSize, "sprites/enemy.png", enemySpeed),
+            new Knight(enemy2Location, defaultSize, "sprites/enemy.png", enemySpeed),
+            new Knight(enemy3Location, defaultSize, "sprites/enemy.png", enemySpeed)
+        };
+        for (Enemy enemy: allEnemies) {
+            addEntity(enemy);
+            enemy.move();
+        }
+
+
+        addEntity(player.getScoreboard());
     }
 
     @Override

@@ -5,20 +5,19 @@ import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.entities.Collided;
 import com.github.hanyaeger.api.entities.Collider;
 import com.github.hanyaeger.api.entities.SceneBorderTouchingWatcher;
+import com.github.hanyaeger.api.entities.YaegerEntity;
 import com.github.hanyaeger.api.entities.impl.DynamicSpriteEntity;
 import com.github.hanyaeger.api.entities.impl.SpriteEntity;
-import com.github.hanyaeger.api.media.SoundClip;
 import com.github.hanyaeger.api.scenes.SceneBorder;
 import com.github.hanyaeger.api.userinput.KeyListener;
 import javafx.scene.input.KeyCode;
 import nl.han.mazerunner.Mazerunner;
+import nl.han.mazerunner.Other.Scoreboard;
+import nl.han.mazerunner.entities.Items.Item;
 import nl.han.mazerunner.entities.Items.Key;
 import nl.han.mazerunner.entities.Items.Pickaxe;
-import nl.han.mazerunner.entities.boobytraps.*;
-import nl.han.mazerunner.entities.enemies.MoveableEnemy;
 import nl.han.mazerunner.entities.map.tiles.*;
-import nl.han.mazerunner.entities.powerups.Live;
-import nl.han.mazerunner.entities.powerups.Coin;
+import nl.han.mazerunner.entities.powerups.PowerUp;
 
 import java.util.Set;
 
@@ -33,75 +32,45 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     private int totalOfCoins;
     private int totalOfLives;
     private int moveValue = 60;
+    private Coordinate2D startPoint;
+    private Scoreboard scoreboard;
 
 
-    public Player(Coordinate2D initialLocation, Mazerunner mazerunner, int coins, int lives) {
-        super("sprites/popetje.png", initialLocation, new Size(40, 40));
+    public Player(Coordinate2D initialLocation, Mazerunner mazerunner, int coins, int lives, Scoreboard scoreboard) {
+        super("sprites/player.png", initialLocation, new Size(40, 40));
         this.mazerunner = mazerunner;
         this.totalOfCoins = coins;
         this.totalOfLives = lives;
+        this.startPoint = initialLocation;
+        this.scoreboard = scoreboard;
+        scoreboard.update(totalOfLives, totalOfCoins);
     }
 
     @Override
     public void onCollision(Collider collidingObject) {
         if (collidingObject instanceof Wall) {
             calculateCoordinates((Wall) collidingObject);
+            if (collidingObject instanceof BreakableWall && hasPickaxe == true){
+                ((BreakableWall) collidingObject).remove();
+            }
+            if (collidingObject instanceof Door && hasKey == true){
+                ((Door) collidingObject).remove();
+            }
         }
-        if (collidingObject instanceof Teleporter) {
-            setAnchorLocationX(((Teleporter) collidingObject).getTeleportX());
-            setAnchorLocationY(((Teleporter) collidingObject).getTeleportY());
+        if (collidingObject instanceof Item) {
+            if (collidingObject instanceof Key) {
+                hasKey = true;
+            }
+            if (collidingObject instanceof Pickaxe) {
+                hasPickaxe = true;
+            }
+            ((Item) collidingObject).remove();
         }
-        if (collidingObject instanceof Coin) {
-            totalOfCoins++;
-            ((Coin) collidingObject).remove();
-        }
-        if (collidingObject instanceof Live) {
-            totalOfLives++;
-            ((Live) collidingObject).remove();
+        if (collidingObject instanceof PowerUp) {
+            ((PowerUp) collidingObject).pickUp(this);
         }
         if (collidingObject instanceof Finish) {
             this.mazerunner.setActiveScene(2);
-        }
-        if (collidingObject instanceof Pickaxe) {
-            hasPickaxe = true;
-            ((Pickaxe) collidingObject).remove();
-        }
-        if (collidingObject instanceof Key) {
-            hasKey = true;
-            ((Key) collidingObject).remove();
-        }
-        if (collidingObject instanceof BreakableWall && hasPickaxe == true){
-            ((BreakableWall) collidingObject).remove();
-        }
-        if (collidingObject instanceof Door && hasKey == true){
-            ((Door) collidingObject).remove();
-        }
-        if (collidingObject instanceof MoveableEnemy) {
-            SoundClip swordSound = new SoundClip("audio/sword_sound.mp3");
-            swordSound.play();
-            totalOfLives--;
-            Coordinate2D startPoint = new Coordinate2D(70, 70);
-            setAnchorLocation(startPoint);
-            moveValue = 60;
-            checkLives();
-        }
-        if (collidingObject instanceof LandMine) {
-            SoundClip swordSound = new SoundClip("audio/boom.mp3");
-            swordSound.play();
-            totalOfLives--;
-            Coordinate2D startPoint = new Coordinate2D(70, 70);
-            setAnchorLocation(startPoint);
-            moveValue = 60;
-            ((LandMine) collidingObject).remove();
-            checkLives();
-        }
-        if (collidingObject instanceof InvertedControlsTrap){
-            if (moveValue == 60){
-                moveValue = -60;
-            } else {
-                moveValue = 60;
-            }
-            ((InvertedControlsTrap) collidingObject).remove();
         }
     }
 
@@ -164,6 +133,38 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         }
     }
 
+    public void takeLife(){
+        totalOfLives--;
+        checkLives();
+    }
+
+    public void giveLife(){
+        totalOfLives++;
+        scoreboard.update(totalOfLives, totalOfCoins);
+    }
+
+    public void giveCoin(){
+        totalOfCoins++;
+        scoreboard.update(totalOfLives, totalOfCoins);
+    }
+
+    public void movePlayer(Coordinate2D location) {
+        setAnchorLocation(location);
+    }
+
+    public void teleportBackToSpawn(){
+        movePlayer(startPoint);
+    }
+
+
+    public void invertMovement(){
+        if (moveValue == 60){
+            moveValue = -60;
+        } else {
+            moveValue = 60;
+        }
+    }
+
     private void checkLives(){
         if (totalOfLives == 0) {
             this.mazerunner.setActiveScene(2);
@@ -188,4 +189,7 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         return totalOfLives;
     }
 
+    public Scoreboard getScoreboard() {
+        return scoreboard;
+    }
 }
