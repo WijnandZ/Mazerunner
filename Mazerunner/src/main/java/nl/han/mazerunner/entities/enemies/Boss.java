@@ -14,9 +14,8 @@ public class Boss extends Enemy {
     public void attack(Player player) {
         sound.play();
         if(player.getSword() == false){
-            player.takeLife(3);
+            player.takeLifes(3);
             player.teleportBackToSpawn();
         }
-
     }
 }

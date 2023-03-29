@@ -46,12 +46,12 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
         Coordinate2D enemy1Location = new Coordinate2D(70, 430);
         Coordinate2D enemy2Location = new Coordinate2D(1330, 730);
         Coordinate2D enemy3Location = new Coordinate2D(1690, 850);
-        Coordinate2D enemy4Location = new Coordinate2D(1830, 920);
+        Coordinate2D enemy4Location = new Coordinate2D(1810, 910);
         Enemy[] allEnemies = {
             new Knight(enemy1Location, defaultSize, "sprites/enemy.png", enemySpeed),
             new Knight(enemy2Location, defaultSize, "sprites/enemy.png", enemySpeed),
             new Knight(enemy3Location, defaultSize, "sprites/enemy.png", enemySpeed),
-            new Boss(enemy4Location, defaultSize, "sprites/chi-yu.png")
+            new Boss(enemy4Location, defaultSize, "sprites/boss_enemy.png")
         };
         for (Enemy enemy: allEnemies) {
             addEntity(enemy);

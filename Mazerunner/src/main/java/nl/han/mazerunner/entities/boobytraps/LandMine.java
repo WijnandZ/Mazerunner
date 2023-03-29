@@ -13,7 +13,7 @@ public class LandMine extends BoobyTrap{
     @Override
     public void trap(Player player) {
         sound.play();
-        player.takeLife(1);
+        player.takeLifes(1);
         player.teleportBackToSpawn();
         remove();
     }

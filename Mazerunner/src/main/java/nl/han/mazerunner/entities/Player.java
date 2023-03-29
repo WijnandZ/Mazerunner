@@ -27,8 +27,8 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     private double lastY;
     private double currentX;
     private double currentY;
-    private boolean hasPickaxe = true;
-    private boolean hasKey = true;
+    private boolean hasPickaxe = false;
+    private boolean hasKey = false;
     private boolean hasSword = true;
     private int totalOfCoins;
     private int totalOfLives;
@@ -73,7 +73,7 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         if (collidingObject instanceof Finish) {
             this.mazerunner.setActiveScene(2);
         }
-        if (collidingObject instanceof Boss && hasSword == true) {
+        if (collidingObject instanceof Enemy && hasSword == true) {
             hitEnemy((Enemy) collidingObject);
         }
     }
@@ -137,19 +137,19 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         }
     }
 
-    public void takeLife(int takeLifes){
+    public void takeLifes(int takeLifes){
         totalOfLives = totalOfLives - takeLifes;
         checkLives();
     }
 
     public void giveLife(){
         totalOfLives++;
-        scoreboard.update(totalOfLives, totalOfCoins);
+        checkLives();
     }
 
     public void giveCoin(){
         totalOfCoins++;
-        scoreboard.update(totalOfLives, totalOfCoins);
+        checkLives();
     }
 
     public void movePlayer(Coordinate2D location) {
@@ -176,6 +176,7 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         if (totalOfLives == 0) {
             this.mazerunner.setActiveScene(2);
         }
+        scoreboard.update(totalOfLives, totalOfCoins);
     }
 
     private void setLastLocation(){

@@ -15,7 +15,7 @@ public class Knight extends Enemy {
     @Override
     public void attack(Player player) {
         sound.play();
-        player.takeLife(1);
+        player.takeLifes(1);
         player.teleportBackToSpawn();
     }
 }
