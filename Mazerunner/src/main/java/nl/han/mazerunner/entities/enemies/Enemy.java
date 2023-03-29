@@ -20,6 +20,12 @@ public class Enemy extends DynamicSpriteEntity implements Collider, Collided {
         this.speed = speed;
     }
 
+    public Enemy(String resource, Coordinate2D location, Size size, SoundClip sound) {
+        super(resource, location, size);
+        this.sound = sound;
+        this.speed = 0;
+    }
+
     public void move() {
         setMotion(speed, Direction.RIGHT);
     }

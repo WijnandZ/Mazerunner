@@ -4,14 +4,12 @@ import com.github.hanyaeger.api.Coordinate2D;
 import com.github.hanyaeger.api.Size;
 import com.github.hanyaeger.api.scenes.DynamicScene;
 import com.github.hanyaeger.api.scenes.TileMapContainer;
-import nl.han.mazerunner.entities.Items.Key;
-import nl.han.mazerunner.entities.Items.Pickaxe;
+import nl.han.mazerunner.entities.Items.*;
 import nl.han.mazerunner.entities.Player;
+import nl.han.mazerunner.entities.enemies.Boss;
 import nl.han.mazerunner.entities.enemies.Enemy;
 import nl.han.mazerunner.entities.enemies.Knight;
 import nl.han.mazerunner.entities.map.MazeMap;
-import nl.han.mazerunner.entities.Items.Life;
-import nl.han.mazerunner.entities.Items.Coin;
 
 public class MazeScene extends DynamicScene implements TileMapContainer {
     private Player player;
@@ -31,9 +29,11 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
     public void setupEntities() {
         int defaultWidth = 40;
         Size defaultSize = new Size(defaultWidth, defaultWidth);
+        Coordinate2D swordLocation = new Coordinate2D(70, 850);
 
         addEntity(new Pickaxe(defaultSize));
         addEntity(new Key(defaultSize));
+        addEntity(new Sword(swordLocation, defaultSize));
         for (int i = 0; i < 3; i++) {
             addEntity(new Life(defaultSize));
         }
@@ -46,10 +46,12 @@ public class MazeScene extends DynamicScene implements TileMapContainer {
         Coordinate2D enemy1Location = new Coordinate2D(70, 430);
         Coordinate2D enemy2Location = new Coordinate2D(1330, 730);
         Coordinate2D enemy3Location = new Coordinate2D(1690, 850);
+        Coordinate2D enemy4Location = new Coordinate2D(1830, 920);
         Enemy[] allEnemies = {
             new Knight(enemy1Location, defaultSize, "sprites/enemy.png", enemySpeed),
             new Knight(enemy2Location, defaultSize, "sprites/enemy.png", enemySpeed),
-            new Knight(enemy3Location, defaultSize, "sprites/enemy.png", enemySpeed)
+            new Knight(enemy3Location, defaultSize, "sprites/enemy.png", enemySpeed),
+            new Boss(enemy4Location, defaultSize, "sprites/chi-yu.png")
         };
         for (Enemy enemy: allEnemies) {
             addEntity(enemy);

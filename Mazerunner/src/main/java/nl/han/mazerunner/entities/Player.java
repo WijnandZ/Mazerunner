@@ -15,6 +15,8 @@ import nl.han.mazerunner.Other.Scoreboard;
 import nl.han.mazerunner.entities.Items.Item;
 import nl.han.mazerunner.entities.Items.Key;
 import nl.han.mazerunner.entities.Items.Pickaxe;
+import nl.han.mazerunner.entities.enemies.Boss;
+import nl.han.mazerunner.entities.enemies.Enemy;
 import nl.han.mazerunner.entities.map.tiles.*;
 
 import java.util.Set;
@@ -25,8 +27,9 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     private double lastY;
     private double currentX;
     private double currentY;
-    private boolean hasPickaxe = false;
-    private boolean hasKey = false;
+    private boolean hasPickaxe = true;
+    private boolean hasKey = true;
+    private boolean hasSword = true;
     private int totalOfCoins;
     private int totalOfLives;
     private int moveValue = 60;
@@ -62,10 +65,16 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
             if (collidingObject instanceof Pickaxe) {
                 hasPickaxe = true;
             }
+            if (collidingObject instanceof Pickaxe) {
+                hasSword = true;
+            }
             ((Item) collidingObject).pickUp(this);
         }
         if (collidingObject instanceof Finish) {
             this.mazerunner.setActiveScene(2);
+        }
+        if (collidingObject instanceof Boss && hasSword == true) {
+            hitEnemy((Enemy) collidingObject);
         }
     }
 
@@ -128,8 +137,8 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         }
     }
 
-    public void takeLife(){
-        totalOfLives--;
+    public void takeLife(int takeLifes){
+        totalOfLives = totalOfLives - takeLifes;
         checkLives();
     }
 
@@ -151,13 +160,16 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
         movePlayer(startPoint);
     }
 
-
     public void invertMovement(){
         if (moveValue == 60){
             moveValue = -60;
         } else {
             moveValue = 60;
         }
+    }
+
+    public void hitEnemy(Enemy enemy){
+        enemy.remove();
     }
 
     private void checkLives(){
@@ -187,4 +199,6 @@ public class Player extends DynamicSpriteEntity implements SceneBorderTouchingWa
     public Scoreboard getScoreboard() {
         return scoreboard;
     }
+
+    public boolean getSword(){ return hasSword; }
 }

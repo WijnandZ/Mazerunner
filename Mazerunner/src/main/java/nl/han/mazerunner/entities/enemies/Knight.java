@@ -8,14 +8,14 @@ import nl.han.mazerunner.entities.Player;
 import nl.han.mazerunner.entities.map.tiles.Wall;
 
 public class Knight extends Enemy {
-    public Knight(Coordinate2D enemy1Location, Size defaultSize, String s, int speed) {
-        super(s, enemy1Location, defaultSize, speed, new SoundClip("audio/sword_sound.mp3"));
+    public Knight(Coordinate2D location, Size size, String resource, int speed) {
+        super(resource, location, size, speed, new SoundClip("audio/sword_sound.mp3"));
     }
 
     @Override
     public void attack(Player player) {
         sound.play();
-        player.takeLife();
+        player.takeLife(1);
         player.teleportBackToSpawn();
     }
 }
