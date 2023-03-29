@@ -39,13 +39,11 @@ public class Enemy extends DynamicSpriteEntity implements Collider, Collided {
 
     @Override
     public void onCollision(Collider collidingObject) {
+        if(collidingObject instanceof Player) {
+            attack((Player) collidingObject);
+        }
         if (collidingObject instanceof Wall) {
-            if (getDirection() == 90) {
-                setMotion(getSpeed(), Direction.LEFT);
-            } else {
-                setMotion(getSpeed(), Direction.RIGHT);
-            }
+            changeDirection();
         }
     }
-
 }

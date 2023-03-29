@@ -14,11 +14,6 @@ import java.util.Random;
 public abstract class Item extends SpriteEntity implements Collider, Collided {
     SoundClip sound;
 
-    public Item(String resource, Coordinate2D location, Size size, SoundClip sound) {
-        super(resource, location, size);
-        this.sound = sound;
-    }
-
     public Item(String sprite, Size size, SoundClip sound) {
         super(sprite, new Coordinate2D(), size);
         this.sound = sound;

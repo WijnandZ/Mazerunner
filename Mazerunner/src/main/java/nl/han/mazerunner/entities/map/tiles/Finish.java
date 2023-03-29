@@ -16,7 +16,6 @@ public class Finish extends SpriteEntity implements Collider, Collided {
         this.sound = new SoundClip("audio/finish.mp3");
     }
 
-
     @Override
     public void onCollision(Collider collidingObject) {
         if(collidingObject instanceof Player) {

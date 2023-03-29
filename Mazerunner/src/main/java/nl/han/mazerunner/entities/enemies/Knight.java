@@ -18,14 +18,4 @@ public class Knight extends Enemy {
         player.takeLife();
         player.teleportBackToSpawn();
     }
-
-    @Override
-    public void onCollision(Collider collidingObject) {
-        if(collidingObject instanceof Player) {
-            attack((Player) collidingObject);
-        }
-        if (collidingObject instanceof Wall) {
-            changeDirection();
-        }
-    }
 }
